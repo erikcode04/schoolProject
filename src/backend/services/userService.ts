@@ -12,11 +12,11 @@ export class UserService {
         if (!this.collection) {
             this.collection = await mongoDb.getCollection<User>('users');
 
-            
+
             try {
                 await this.collection.createIndex({ email: 1 }, { unique: true });
             } catch (error) {
-                
+
                 console.log('Email index already exists or failed to create:', error);
             }
         }
@@ -27,7 +27,7 @@ export class UserService {
         try {
             const collection = await this.getCollection();
 
-            
+
             const existingUser = await collection.findOne({ email: userData.email.toLowerCase() });
             if (existingUser) {
                 return {
@@ -36,11 +36,11 @@ export class UserService {
                 };
             }
 
-            
+
             const saltRounds = 12;
             const passwordHash = await bcrypt.hash(userData.password, saltRounds);
 
-            
+
             const newUser: Omit<User, '_id' | 'id'> = {
                 fullname: userData.fullname.trim(),
                 email: userData.email.toLowerCase().trim(),
@@ -58,10 +58,10 @@ export class UserService {
                 };
             }
 
-            
+
             const token = this.generateToken(createdUser);
 
-            
+
             await collection.updateOne(
                 { _id: createdUser._id },
                 { $set: { lastLoginAt: new Date() } }
@@ -95,7 +95,7 @@ export class UserService {
 
             const user = await collection.findOne({ email: loginData.email.toLowerCase() });
             console.log('UserService: User lookup result:', user ? 'User found' : 'User not found');
-            
+
             if (!user) {
                 console.log('UserService: Login failed - user not found');
                 return {
@@ -106,7 +106,7 @@ export class UserService {
 
             const isValidPassword = await bcrypt.compare(loginData.password, user.passwordHash);
             console.log('UserService: Password validation result:', isValidPassword);
-            
+
             if (!isValidPassword) {
                 console.log('UserService: Login failed - invalid password');
                 return {
@@ -148,7 +148,7 @@ export class UserService {
         try {
             const decoded = jwt.verify(token, this.JWT_SECRET) as any;
 
-            
+
             const collection = await this.getCollection();
             const user = await collection.findOne({ _id: new ObjectId(decoded.userId) });
 
@@ -195,15 +195,15 @@ export class UserService {
     async deleteUser(userId: string): Promise<{ success: boolean; message?: string }> {
         try {
             const collection = await this.getCollection();
-            
-            
+
+
             const { CryptoService } = await import('./cryptoService.js');
             const cryptoService = new CryptoService();
             await cryptoService.deleteUserCryptos(userId);
-            
-            
+
+
             const result = await collection.deleteOne({ _id: new ObjectId(userId) });
-            
+
             if (result.deletedCount === 1) {
                 return {
                     success: true,
@@ -238,7 +238,7 @@ export class UserService {
         const payload = {
             userId: user._id!.toString(),
             email: user.email,
-            exp: Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60) 
+            exp: Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60)
         };
 
         return jwt.sign(payload, this.JWT_SECRET);

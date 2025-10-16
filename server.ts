@@ -36,11 +36,11 @@ async function createServer() {
         app.get('/', (req, res) => {
             res.sendFile(path.join(__dirname, 'dist', 'index.html'));
         });
-        
+
         app.get('/items', (req, res) => {
             res.sendFile(path.join(__dirname, 'dist', 'index.html'));
         });
-        
+
         app.use((req, res) => {
             if (!req.path.startsWith('/api')) {
                 res.sendFile(path.join(__dirname, 'dist', 'index.html'));

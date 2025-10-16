@@ -59,7 +59,7 @@ class MongoDatabase {
 
     public async getDb(): Promise<Db> {
         let retries = 3;
-        
+
         while (retries > 0) {
             if (!this.isConnected || !this.db) {
                 console.log(`Attempting to connect to database (${4 - retries}/3)...`);
@@ -69,7 +69,7 @@ class MongoDatabase {
             if (this.db && this.isConnected) {
                 return this.db;
             }
-            
+
             retries--;
             if (retries > 0) {
                 console.log(`Database connection failed, retrying in 2 seconds... (${retries} attempts left)`);
@@ -102,7 +102,7 @@ class MongoDatabase {
             if (!this.isConnected || !this.db) {
                 await this.connect();
             }
-            
+
             if (this.db && this.isConnected) {
                 await this.db.admin().ping();
                 return { connected: true };
@@ -110,9 +110,9 @@ class MongoDatabase {
                 return { connected: false, error: 'Database instance not available' };
             }
         } catch (error) {
-            return { 
-                connected: false, 
-                error: error instanceof Error ? error.message : String(error) 
+            return {
+                connected: false,
+                error: error instanceof Error ? error.message : String(error)
             };
         }
     }

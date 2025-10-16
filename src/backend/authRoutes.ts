@@ -182,9 +182,9 @@ router.delete('/delete-account', async (req: Request, res: Response) => {
 router.get('/debug/db', async (req: Request, res: Response) => {
     try {
         console.log('Debug: Testing database connection...');
-        
+
         const connectionTest = await mongoDb.testConnection();
-        
+
         if (!connectionTest.connected) {
             return res.status(500).json({
                 success: false,
@@ -193,10 +193,10 @@ router.get('/debug/db', async (req: Request, res: Response) => {
                 userCount: 0
             });
         }
-        
+
         const userCount = await userService.getUserCount();
         console.log('Debug: User count in database:', userCount);
-        
+
         return res.status(200).json({
             success: true,
             message: 'Database connection working',
@@ -211,4 +211,4 @@ router.get('/debug/db', async (req: Request, res: Response) => {
             error: error instanceof Error ? error.message : String(error)
         });
     }
-});export default router;
+}); export default router;
