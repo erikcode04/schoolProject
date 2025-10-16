@@ -1,0 +1,417 @@
+:root {
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    font-weight: 500;
+    color: #646cff;
+    text-decoration: inherit;
+}
+
+a:hover {
+    color: #535bf2;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+}
+
+h1 {
+    font-size: 3.2em;
+    line-height: 1.1;
+}
+
+#app {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+.page {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.navigation {
+    margin: 2rem 0;
+}
+
+.nav-button {
+    background-color: #646cff;
+    color: white;
+    border: none;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 0 0.5em;
+    transition: background-color 0.25s;
+}
+
+.nav-button:hover {
+    background-color: #535bf2;
+}
+
+.form-container {
+    background-color: #1a1a1a;
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.6em;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background-color: #2a2a2a;
+    color: #fff;
+    font-size: 1em;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.items-container {
+    margin: 2rem 0;
+}
+
+.item-card {
+    background-color: #1a1a1a;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.item-card h3 {
+    margin-top: 0;
+    color: #646cff;
+}
+
+.item-card p {
+    margin: 0.5rem 0;
+}
+
+.item-card small {
+    color: #888;
+}
+
+.item-actions {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.edit-btn {
+    background-color: #f39c12;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.no-items {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    padding: 2rem;
+}
+
+.card {
+    padding: 2em;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+.card ul {
+    text-align: left;
+    display: inline-block;
+}
+
+.search-container {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border: 1px solid #444;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.search-section h2 {
+    margin-top: 0;
+    color: #fff;
+    font-size: 1.5rem;
+}
+
+.search-input-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.search-input-container input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #555;
+    border-radius: 6px;
+    background: #333;
+    color: #fff;
+    font-size: 16px;
+}
+
+.search-input-container input:focus {
+    outline: none;
+    border-color: #646cff;
+    box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.2);
+}
+
+.search-button {
+    padding: 12px 24px;
+    background: #646cff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.search-button:hover {
+    background: #535bf2;
+}
+
+.search-results {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.search-result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #444;
+    transition: background-color 0.2s;
+}
+
+.search-result-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.crypto-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.crypto-symbol {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #fff;
+}
+
+.crypto-name {
+    font-size: 0.875rem;
+    color: #aaa;
+}
+
+.add-crypto-btn {
+    padding: 6px 12px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+}
+
+.add-crypto-btn:hover {
+    background: #218838;
+}
+
+.loading {
+    padding: 20px;
+    text-align: center;
+    color: #aaa;
+    font-style: italic;
+}
+
+.no-results {
+    padding: 20px;
+    text-align: center;
+    color: #aaa;
+}
+
+.portfolio-container {
+    margin-top: 2rem;
+}
+
+.portfolio-container h2 {
+    color: #fff;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.crypto-list {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
+
+.crypto-card {
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.crypto-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.crypto-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.crypto-main-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.crypto-card .crypto-symbol {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #646cff;
+    margin-bottom: 4px;
+}
+
+.crypto-card .crypto-name {
+    font-size: 1rem;
+    color: #aaa;
+}
+
+.remove-crypto-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    transition: background-color 0.2s;
+}
+
+.remove-crypto-btn:hover {
+    background: #c82333;
+}
+
+.crypto-stats {
+    display: grid;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: #aaa;
+}
+
+.stat-value {
+    font-weight: 500;
+    color: #fff;
+}
+
+.stat-value.positive {
+    color: #28a745;
+}
+
+.stat-value.negative {
+    color: #dc3545;
+}
+
+.added-date {
+    font-size: 0.75rem;
+    color: #666;
+    font-style: italic;
+}
+
+.empty-portfolio {
+    text-align: center;
+    padding: 3rem;
+    color: #aaa;
+    border: 2px dashed #444;
+    border-radius: 8px;
+}
+
+.empty-portfolio p {
+    margin: 0.5rem 0;
+}
+
+.empty-portfolio p:first-child {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
