@@ -28,17 +28,13 @@ class MongoDatabase {
 
             const mongoOptions = {
                 maxPoolSize: 10,
-                serverSelectionTimeoutMS: 5000,
+                serverSelectionTimeoutMS: 30000,
                 socketTimeoutMS: 45000,
+                connectTimeoutMS: 30000,
                 maxIdleTimeMS: 300000,
                 bufferMaxEntries: 0,
                 retryWrites: true,
-                retryReads: true,
-                ssl: true,
-                sslValidate: true,
-                tlsAllowInvalidCertificates: false,
-                tlsAllowInvalidHostnames: false,
-                authSource: 'admin'
+                retryReads: true
             };
 
             this.client = new MongoClient(uri, mongoOptions);
