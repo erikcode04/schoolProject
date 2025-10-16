@@ -51,20 +51,33 @@ class MongoDatabase {
         } catch (error) {
             console.error('Failed to connect to MongoDB:', error);
             this.isConnected = false;
+            this.db = null;
+            this.client = null;
             console.log('Will retry connection on next database operation');
         }
     }
 
     public async getDb(): Promise<Db> {
-        if (!this.isConnected || !this.db) {
-            await this.connect();
+        let retries = 3;
+        
+        while (retries > 0) {
+            if (!this.isConnected || !this.db) {
+                console.log(`Attempting to connect to database (${4 - retries}/3)...`);
+                await this.connect();
+            }
+
+            if (this.db && this.isConnected) {
+                return this.db;
+            }
+            
+            retries--;
+            if (retries > 0) {
+                console.log(`Database connection failed, retrying in 2 seconds... (${retries} attempts left)`);
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
         }
 
-        if (!this.db) {
-            throw new Error('Database connection not established');
-        }
-
-        return this.db;
+        throw new Error('Database connection not established after 3 attempts');
     }
 
     public async getCollection<T extends Record<string, any> = any>(collectionName: string): Promise<Collection<T>> {
@@ -81,7 +94,27 @@ class MongoDatabase {
     }
 
     public isDbConnected(): boolean {
-        return this.isConnected;
+        return this.isConnected && this.db !== null;
+    }
+
+    public async testConnection(): Promise<{ connected: boolean; error?: string }> {
+        try {
+            if (!this.isConnected || !this.db) {
+                await this.connect();
+            }
+            
+            if (this.db && this.isConnected) {
+                await this.db.admin().ping();
+                return { connected: true };
+            } else {
+                return { connected: false, error: 'Database instance not available' };
+            }
+        } catch (error) {
+            return { 
+                connected: false, 
+                error: error instanceof Error ? error.message : String(error) 
+            };
+        }
     }
 
 
