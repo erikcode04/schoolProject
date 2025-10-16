@@ -89,34 +89,40 @@ export class UserService {
 
     async loginUser(loginData: LoginRequest): Promise<AuthResponse> {
         try {
+            console.log('UserService: Attempting login for email:', loginData.email);
             const collection = await this.getCollection();
+            console.log('UserService: Database collection obtained');
 
-            
             const user = await collection.findOne({ email: loginData.email.toLowerCase() });
+            console.log('UserService: User lookup result:', user ? 'User found' : 'User not found');
+            
             if (!user) {
+                console.log('UserService: Login failed - user not found');
                 return {
                     success: false,
                     message: 'Felaktig e-postadress eller lösenord'
                 };
             }
 
-            
             const isValidPassword = await bcrypt.compare(loginData.password, user.passwordHash);
+            console.log('UserService: Password validation result:', isValidPassword);
+            
             if (!isValidPassword) {
+                console.log('UserService: Login failed - invalid password');
                 return {
                     success: false,
                     message: 'Felaktig e-postadress eller lösenord'
                 };
             }
 
-            
             const token = this.generateToken(user);
+            console.log('UserService: JWT token generated successfully');
 
-            
             await collection.updateOne(
                 { _id: user._id },
                 { $set: { lastLoginAt: new Date() } }
             );
+            console.log('UserService: Last login timestamp updated');
 
             return {
                 success: true,
@@ -130,7 +136,7 @@ export class UserService {
             };
 
         } catch (error) {
-            console.error('Error logging in user:', error);
+            console.error('UserService: Error logging in user:', error);
             return {
                 success: false,
                 message: 'Ett fel uppstod vid inloggning'
@@ -215,6 +221,16 @@ export class UserService {
                 success: false,
                 message: 'Ett fel uppstod vid borttagning av användare'
             };
+        }
+    }
+
+    async getUserCount(): Promise<number> {
+        try {
+            const collection = await this.getCollection();
+            return await collection.countDocuments();
+        } catch (error) {
+            console.error('Error counting users:', error);
+            return 0;
         }
     }
 

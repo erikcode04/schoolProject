@@ -42,15 +42,19 @@ router.post('/signup', async (req: Request, res: Response) => {
 router.post('/login', async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
+        console.log('Login attempt for email:', email);
 
         if (!email || !password) {
+            console.log('Missing email or password');
             return res.status(400).json({
                 success: false,
                 message: 'E-post och lösenord krävs'
             });
         }
 
+        console.log('Calling userService.loginUser...');
         const result = await userService.loginUser({ email, password });
+        console.log('Login result:', { success: result.success, message: result.message });
 
         if (result.success) {
             return res.status(200).json(result);
@@ -170,6 +174,27 @@ router.delete('/delete-account', async (req: Request, res: Response) => {
         return res.status(500).json({
             success: false,
             message: 'Ett serverfel uppstod'
+        });
+    }
+});
+
+router.get('/debug/db', async (req: Request, res: Response) => {
+    try {
+        console.log('Debug: Testing database connection...');
+        const userCount = await userService.getUserCount();
+        console.log('Debug: User count in database:', userCount);
+        
+        return res.status(200).json({
+            success: true,
+            message: 'Database connection working',
+            userCount: userCount
+        });
+    } catch (error) {
+        console.error('Debug: Database test failed:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Database connection failed',
+            error: error instanceof Error ? error.message : String(error)
         });
     }
 });
