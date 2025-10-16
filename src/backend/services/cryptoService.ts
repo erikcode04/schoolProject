@@ -57,7 +57,7 @@ interface UserCrypto {
 export class CryptoService {
     private database: typeof MongoDatabase;
     private CMC_API_KEY: string;
-    private CMC_BASE_URL = 'https:
+    private CMC_BASE_URL = 'https://pro-api.coinmarketcap.com/v1';
 
     constructor() {
         this.database = MongoDatabase;
