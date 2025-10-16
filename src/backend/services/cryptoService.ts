@@ -127,7 +127,7 @@ export class CryptoService {
 
         try {
             console.log('Fetching crypto listings...');
-            const listings = await this.getCryptoListings(1000); 
+            const listings = await this.getCryptoListings(1000);
             console.log('Fetched listings count:', listings.length);
 
             const searchTerm = query.toLowerCase();
@@ -191,7 +191,7 @@ export class CryptoService {
                 throw new Error(`CoinMarketCap API error: ${data.status.error_message}`);
             }
 
-            
+
             return Object.values(data.data) as CryptoData[];
         } catch (error) {
             console.error('Error fetching crypto by IDs:', error);
@@ -203,10 +203,10 @@ export class CryptoService {
         try {
             const collection = await this.database.getCollection<UserCrypto>('user_cryptos');
 
-            
+
             const existing = await collection.findOne({ userId, cryptoId });
             if (existing) {
-                return false; 
+                return false;
             }
 
             const userCrypto: Omit<UserCrypto, '_id'> = {
@@ -245,11 +245,11 @@ export class CryptoService {
                 return [];
             }
 
-            
+
             const cryptoIds = userCryptos.map(uc => uc.cryptoId);
             const cryptoData = await this.getCryptosByIds(cryptoIds);
 
-            
+
             return userCryptos.map(userCrypto => {
                 const priceData = cryptoData.find(cd => cd.id === userCrypto.cryptoId);
 
@@ -275,9 +275,9 @@ export class CryptoService {
     async deleteUserCryptos(userId: string): Promise<boolean> {
         try {
             const collection = await this.database.getCollection<UserCrypto>('user_cryptos');
-            
+
             const result = await collection.deleteMany({ userId });
-            
+
             console.log(`Deleted ${result.deletedCount} crypto entries for user ${userId}`);
             return true;
         } catch (error) {
