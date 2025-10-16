@@ -31,10 +31,7 @@ class MongoDatabase {
                 serverSelectionTimeoutMS: 30000,
                 socketTimeoutMS: 45000,
                 connectTimeoutMS: 30000,
-                maxIdleTimeMS: 300000,
-                bufferMaxEntries: 0,
-                retryWrites: true,
-                retryReads: true
+                maxIdleTimeMS: 300000
             };
 
             this.client = new MongoClient(uri, mongoOptions);
