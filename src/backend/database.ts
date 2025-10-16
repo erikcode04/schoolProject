@@ -10,7 +10,10 @@ class MongoDatabase {
     private isConnected: boolean = false;
 
     constructor() {
-        this.connect();
+        this.connect().catch(error => {
+            console.error('Initial MongoDB connection failed:', error);
+            console.log('Server will continue without database connection');
+        });
     }
 
     private async connect(): Promise<void> {
@@ -22,23 +25,37 @@ class MongoDatabase {
             }
 
             console.log('Connecting to MongoDB...');
-            this.client = new MongoClient(uri);
+
+            const mongoOptions = {
+                maxPoolSize: 10,
+                serverSelectionTimeoutMS: 5000,
+                socketTimeoutMS: 45000,
+                maxIdleTimeMS: 300000,
+                bufferMaxEntries: 0,
+                retryWrites: true,
+                retryReads: true,
+                ssl: true,
+                sslValidate: true,
+                tlsAllowInvalidCertificates: false,
+                tlsAllowInvalidHostnames: false,
+                authSource: 'admin'
+            };
+
+            this.client = new MongoClient(uri, mongoOptions);
             await this.client.connect();
 
-            
             this.db = this.client.db('skoluppgift_js2');
             this.isConnected = true;
 
             console.log('Successfully connected to MongoDB');
 
-            
             await this.db.admin().ping();
             console.log('MongoDB ping successful');
 
         } catch (error) {
             console.error('Failed to connect to MongoDB:', error);
             this.isConnected = false;
-            throw error;
+            console.log('Will retry connection on next database operation');
         }
     }
 
@@ -71,7 +88,7 @@ class MongoDatabase {
         return this.isConnected;
     }
 
-    
+
     public setupGracefulShutdown(): void {
         const shutdown = async () => {
             console.log('Shutting down MongoDB connection...');
@@ -81,7 +98,7 @@ class MongoDatabase {
 
         process.on('SIGINT', shutdown);
         process.on('SIGTERM', shutdown);
-        process.on('SIGUSR2', shutdown); 
+        process.on('SIGUSR2', shutdown);
     }
 }
 
